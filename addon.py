@@ -154,6 +154,8 @@ class TV3PlayAddon(object):
                 url = streams['medium']
             elif 'low' in streams and streams['low'] is not None:
                 url = streams['low']
+            elif 'msg' in streams and streams['msg'] is not None:
+                return
             items.append((url, item))
 
         xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_EPISODE)

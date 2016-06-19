@@ -15,6 +15,7 @@ import urllib
 import urllib2
 try:
     import xbmc
+    import xbmcgui
 except:
     class xbmc(object):
         @staticmethod
@@ -59,6 +60,13 @@ class JsonApi(object):
             content = connection.read()
             connection.close()
             return content
+        except urllib2.HTTPError, e:
+            data = e.read()
+            reason = json.loads(data.decode('iso-8859-1').encode('utf-8'))
+            xbmcgui.Dialog().ok(("HTTP Error: " + str(e.code) + " " + e.reason),
+                                reason['msg'])
+            return data
+
         except Exception as ex:
             raise JsonApiException(ex)
 
@@ -225,7 +233,7 @@ class MtgApi(object):
         try:
             return data['streams']
         except:
-            return {}
+            return data
 
     @staticmethod
     def test():
